@@ -8,11 +8,9 @@ instance.defaults.headers.common['Authorization'] = '';
 
 instance.interceptors.request.use(
   function (config) {
-    console.log('Making request : ' + config.url);
     return config;
   },
   function (error) {
-    console.log(error);
     return Promise.reject(error);
   }
 );

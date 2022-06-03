@@ -23,7 +23,7 @@ function CommentsFeed({ feed }) {
           </Link>
         )
       ) : (
-        <Text style={{ color: 'gray' }}>No Comments</Text>
+        <Text style={{ color: 'gray', fontStyle: 'italic' }}>No Comments</Text>
       )}
     </div>
   );

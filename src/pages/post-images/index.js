@@ -7,10 +7,9 @@ function PostImagesPgae() {
   const [form] = Form.useForm();
   const history = useHistory();
 
-  const { Title, Text } = Typography;
+  const { Title } = Typography;
   const { TextArea } = Input;
 
-  const [loading, setLoading] = useState(false);
   const [imageUrl, setImageUrl] = useState('');
 
   const props = {
@@ -47,8 +46,7 @@ function PostImagesPgae() {
     if (!imageUrl) {
       return;
     }
-
-    const newFeed = {
+    const newPost = {
       username: 'me',
       userCover: null,
       image: {
@@ -57,10 +55,17 @@ function PostImagesPgae() {
       },
       comments: [],
     };
-    history.push({ pathname: '/', state: { newFeed: newFeed } });
+    history.push({ pathname: '/', state: { newPost: newPost } });
   };
+
   return (
-    <div style={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
+    <div
+      style={{
+        height: '100%',
+        display: 'flex',
+        flexDirection: 'column',
+      }}
+    >
       <div
         style={{
           borderBottom: '1px solid 	#D3D3D3',
@@ -82,17 +87,34 @@ function PostImagesPgae() {
       >
         <Upload {...props} name="avatar" showUploadList={false}>
           {imageUrl ? (
-            <img
-              src={imageUrl}
-              style={{ width: '100%', marginBottom: '16px' }}
-              alt="newPost"
-            />
+            <div
+              style={{
+                width: '100%',
+                height: '420px',
+                marginBottom: '16px',
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}
+            >
+              <img
+                src={imageUrl}
+                style={{
+                  width: '100%',
+                  marginBottom: '16px',
+                }}
+                alt="newPost"
+              />
+            </div>
           ) : (
             <div
               style={{
                 display: 'flex',
                 flexDirection: 'column',
+                justifyContent: 'center',
                 alignItems: 'center',
+                marginBottom: '16px',
+                height: '420px',
               }}
             >
               <PictureOutlined style={{ fontSize: 100 }} />
@@ -120,18 +142,20 @@ function PostImagesPgae() {
           <Form.Item
             name="caption"
             style={{
-              width: '90%',
+              width: '100%',
             }}
           >
-            <TextArea row={3} placeholder="Write a caption..." />
+            <TextArea
+              row={3}
+              placeholder="Write a caption..."
+              style={{ borderRadius: 6 }}
+            />
           </Form.Item>
           <Button
-            type="dashed"
+            type="primary"
             htmlType="submit"
             style={{
-              width: '90%',
-              color: '#1890ff',
-              borderColor: '#1890ff',
+              width: '100%',
               marginTop: 'auto',
             }}
           >

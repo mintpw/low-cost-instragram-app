@@ -1,8 +1,11 @@
+import { message } from 'antd';
 import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router';
 import CommentsFeed from '../components/comments/CommentsFeed';
 import FeedContent from '../components/feed/FeedContent';
+import FeedSkeleton from '../components/feed/FeedSkeleton';
 import FeedStory from '../components/feed/FeedStory';
+import StorySkeleton from '../components/story/StorySkeleton';
 import { getFeedsAPI } from '../services/feedService';
 import { getStoriesAPI } from '../services/storyService';
 
@@ -10,19 +13,21 @@ function HomePage() {
   const location = useLocation();
 
   const [feeds, setFeeds] = useState([]);
-  const [feedsLoading, setFeedsLoading] = useState(true);
+  const [feedsLoading, setFeedsLoading] = useState(false);
+  const [storiesLoading, setStoriesLoading] = useState(false);
   const [stories, setStories] = useState([]);
 
   useEffect(() => {
     const fetchFeeds = async () => {
       try {
+        setFeedsLoading(true);
         const { data } = await getFeedsAPI();
         setFeeds(data.feeds);
-        if (location.state && location.state.newFeed) {
-          setFeeds((prev) => [location.state.newFeed, ...prev]);
+        if (location.state && location.state.newPost) {
+          setFeeds((prev) => [location.state.newPost, ...prev]);
         }
       } catch (error) {
-        console.log('error', error);
+        message.error(error);
       } finally {
         setFeedsLoading(false);
       }
@@ -34,10 +39,13 @@ function HomePage() {
   useEffect(() => {
     const fecthStories = async () => {
       try {
+        setStoriesLoading(true);
         const { data } = await getStoriesAPI();
         setStories(data.story);
       } catch (error) {
-        console.log('error', error);
+        message.error(error);
+      } finally {
+        setStoriesLoading(false);
       }
     };
     fecthStories();
@@ -45,32 +53,46 @@ function HomePage() {
 
   return (
     <>
-      <div
-        style={{
-          overflowX: 'auto',
-          width: '100%',
-        }}
-      >
+      {storiesLoading ? (
+        <StorySkeleton />
+      ) : Array.isArray(stories) && stories.length > 0 ? (
         <div
           style={{
-            display: 'flex',
-            flexDirection: 'row',
+            overflowX: 'auto',
             width: '100%',
+            marginBottom: '16px',
           }}
         >
-          {Array.isArray(stories) && stories.length > 0
-            ? stories.map((story, index) => {
-                return (
-                  <div key={index}>
-                    <FeedStory story={story} />
-                  </div>
-                );
-              })
-            : null}
+          <div
+            style={{
+              display: 'flex',
+              flexDirection: 'row',
+            }}
+          >
+            {stories.map((story, index) => {
+              return (
+                <div key={index}>
+                  <FeedStory story={story} />
+                </div>
+              );
+            })}
+          </div>
         </div>
-      </div>
-      {Array.isArray(feeds) && feeds.length > 0
-        ? feeds.map((feed, index) => {
+      ) : null}
+
+      <div
+        style={{
+          display: 'flex',
+          flexDirection: 'column',
+        }}
+      >
+        {feedsLoading ? (
+          <>
+            <FeedSkeleton />
+            <FeedSkeleton />
+          </>
+        ) : Array.isArray(feeds) && feeds.length > 0 ? (
+          feeds.map((feed, index) => {
             return (
               <div key={index} style={{ paddingBottom: '16px' }}>
                 <FeedContent
@@ -82,7 +104,8 @@ function HomePage() {
               </div>
             );
           })
-        : null}
+        ) : null}
+      </div>
     </>
   );
 }

@@ -66,6 +66,10 @@ const AppLayout = ({ children }) => {
           size="large"
           icon={<PlusOutlined />}
           onClick={() => history.push('/post-images')}
+          style={{
+            background: 'linear-gradient(to bottom, #d82b7e, #f57939)',
+            borderColor: '#d82b7e',
+          }}
         />
         <Button
           type="link"

@@ -9,7 +9,7 @@ import Text from 'antd/lib/typography/Text';
 import React from 'react';
 import { useHistory } from 'react-router';
 
-function FeedContent({ feed, index, pathname }) {
+function FeedContent({ feed, pathname }) {
   const history = useHistory();
 
   return feed ? (
@@ -17,26 +17,37 @@ function FeedContent({ feed, index, pathname }) {
       style={{
         display: 'flex',
         flexDirection: 'column',
-        width: '100%',
       }}
     >
       <Space size={4} style={{ marginBottom: '10px' }}>
-        <Avatar size={32} src={feed.userCover ?? null} icon={<UserOutlined />} />
-        <Text style={{ fontWeight: 700 }}>{feed.username ?? 'Anonymous User'}</Text>
+        <Avatar
+          size={32}
+          src={feed.userCover ? feed.userCover : null}
+          icon={<UserOutlined />}
+        />
+        <Text style={{ fontWeight: 700 }}>
+          {feed.username ? feed.username : 'Anonymous User'}
+        </Text>
       </Space>
-      <Image
-        alt="imageContent"
-        width="100%"
-        src={feed.image?.url}
-        preview={{ visible: false }}
-      />
+      <div
+        style={{
+          width: '100%',
+          marginBottom: '6px',
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}
+      >
+        <Image
+          alt="imageContent"
+          height="100%"
+          src={feed.image?.url ? feed.image.url : null}
+          preview={{ visible: false }}
+        />
+      </div>
       {pathname !== '/comments' ? (
-        <Space size={1}>
-          <Button
-            type="link"
-            style={{ color: 'gray', margin: 0 }}
-            icon={<HeartOutlined />}
-          />
+        <Space size={1} style={{ marginLeft: -8 }}>
+          <Button type="link" style={{ color: 'gray' }} icon={<HeartOutlined />} />
           <Button
             type="link"
             style={{ color: 'gray' }}
@@ -58,8 +69,12 @@ function FeedContent({ feed, index, pathname }) {
           marginTop: pathname === '/comments' ? '10px' : 0,
         }}
       >
-        <Text style={{ fontWeight: 700 }}>{feed.username ?? 'Anonymous User'} </Text>
-        <Text style={{ overflowWrap: 'anywhere' }}>{feed.image?.caption ?? ''}</Text>
+        <Text style={{ fontWeight: 700 }}>
+          {feed.username ? feed.username : 'Anonymous User'}{' '}
+        </Text>
+        <Text style={{ overflowWrap: 'anywhere' }}>
+          {feed.image?.caption ? feed.image.caption : ''}
+        </Text>
       </div>
     </div>
   ) : null;

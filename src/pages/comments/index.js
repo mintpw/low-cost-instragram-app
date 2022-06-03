@@ -4,6 +4,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { useHistory, useLocation } from 'react-router';
 import CommentsAll from '../../components/comments/CommentsAll';
 import FeedContent from '../../components/feed/FeedContent';
+import FeedSkeleton from '../../components/feed/FeedSkeleton';
 
 function CommentsPage() {
   const location = useLocation();
