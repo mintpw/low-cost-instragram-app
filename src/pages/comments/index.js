@@ -1,10 +1,10 @@
-import { SendOutlined, UserOutlined } from '@ant-design/icons';
+import { ArrowLeftOutlined, SendOutlined, UserOutlined } from '@ant-design/icons';
 import { Avatar, Button, Form, Input, Typography } from 'antd';
 import React, { useEffect, useRef, useState } from 'react';
 import { useHistory, useLocation } from 'react-router';
+import { Link } from 'react-router-dom';
 import CommentsAll from '../../components/comments/CommentsAll';
 import FeedContent from '../../components/feed/FeedContent';
-import FeedSkeleton from '../../components/feed/FeedSkeleton';
 
 function CommentsPage() {
   const location = useLocation();
@@ -24,7 +24,7 @@ function CommentsPage() {
       setFeed(location.state.feed);
       setComments(location.state.feed.comments);
     }
-  }, [location]);
+  }, [location, history]);
 
   const submitCommentHandle = (value) => {
     if (!value.comment) {
@@ -67,6 +67,17 @@ function CommentsPage() {
             marginBottom: '16px',
           }}
         >
+          <Link
+            to="/"
+            style={{
+              color: 'black',
+              position: 'absolute',
+              top: 20,
+              left: 14,
+            }}
+          >
+            <ArrowLeftOutlined style={{ fontSize: '16px' }} />
+          </Link>
           <Title level={4} style={{ textAlign: 'center' }}>
             Comments
           </Title>

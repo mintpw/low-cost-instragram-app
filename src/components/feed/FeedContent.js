@@ -1,5 +1,6 @@
 import {
   CommentOutlined,
+  FrownOutlined,
   HeartOutlined,
   SendOutlined,
   UserOutlined,
@@ -38,12 +39,27 @@ function FeedContent({ feed, pathname }) {
           alignItems: 'center',
         }}
       >
-        <Image
-          alt="imageContent"
-          height="100%"
-          src={feed.image?.url ? feed.image.url : null}
-          preview={{ visible: false }}
-        />
+        {feed.image?.url ? (
+          <Image
+            alt="imageContent"
+            height="100%"
+            src={feed.image.url}
+            preview={{ visible: false }}
+          />
+        ) : (
+          <div
+            style={{
+              height: '150px',
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              flexDirection: 'column',
+            }}
+          >
+            <FrownOutlined style={{ fontSize: '48px', marginBottom: '10px' }} />
+            <Text>Oops, something went wrong</Text>
+          </div>
+        )}
       </div>
       {pathname !== '/comments' ? (
         <Space size={1} style={{ marginLeft: -8 }}>

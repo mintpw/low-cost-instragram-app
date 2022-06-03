@@ -1,16 +1,18 @@
-import { PictureOutlined } from '@ant-design/icons';
+import { CloseOutlined, PictureOutlined } from '@ant-design/icons';
 import { Button, Form, Input, message, Typography, Upload } from 'antd';
 import React, { useState } from 'react';
 import { useHistory } from 'react-router';
+import { Link } from 'react-router-dom';
 
 function PostImagesPgae() {
   const [form] = Form.useForm();
   const history = useHistory();
 
-  const { Title } = Typography;
+  const { Title, Text } = Typography;
   const { TextArea } = Input;
 
   const [imageUrl, setImageUrl] = useState('');
+  const [isShownErrorMessage, setIsShownErrorMessage] = useState(false);
 
   const props = {
     beforeUpload: async (file) => {
@@ -21,15 +23,17 @@ function PostImagesPgae() {
         return false;
       }
 
-      const isLt2M = file.size / 1024 / 1024 < 2;
+      const isLt2M = file.size / 1024 / 1024 < 20;
 
       if (!isLt2M) {
-        message.error('Image must smaller than 2MB!');
+        message.error('Image must be smaller than 20MB!');
         return false;
       }
-
       const filePreview = await getBase64(file);
       setImageUrl(filePreview);
+      setIsShownErrorMessage(false);
+
+      return false;
     },
   };
 
@@ -44,6 +48,7 @@ function PostImagesPgae() {
 
   const submitNewPostHandle = (value) => {
     if (!imageUrl) {
+      setIsShownErrorMessage(true);
       return;
     }
     const newPost = {
@@ -70,11 +75,23 @@ function PostImagesPgae() {
         style={{
           borderBottom: '1px solid 	#D3D3D3',
           paddingTop: '16px',
+          position: 'relative',
         }}
       >
         <Title level={4} style={{ textAlign: 'center' }}>
           Create New Post
         </Title>
+        <Link
+          to="/"
+          style={{
+            color: 'black',
+            position: 'absolute',
+            top: 18,
+            right: 10,
+          }}
+        >
+          <CloseOutlined style={{ fontSize: '16px' }} />
+        </Link>
       </div>
       <div
         style={{
@@ -90,11 +107,12 @@ function PostImagesPgae() {
             <div
               style={{
                 width: '100%',
-                height: '420px',
+                // height: '420px',
                 marginBottom: '16px',
                 display: 'flex',
                 justifyContent: 'center',
                 alignItems: 'center',
+                overflowY: 'auto',
               }}
             >
               <img
@@ -120,10 +138,16 @@ function PostImagesPgae() {
               <PictureOutlined style={{ fontSize: 100 }} />
               <Button
                 type="primary"
-                style={{ borderRadius: 4, marginBottom: '16px' }}
+                style={{
+                  borderRadius: 4,
+                  marginBottom: isShownErrorMessage ? '6px' : '16px',
+                }}
               >
                 Select From Computer
               </Button>
+              {isShownErrorMessage ? (
+                <Text style={{ color: 'red' }}>Please select an image :D</Text>
+              ) : null}
             </div>
           )}
         </Upload>
@@ -143,6 +167,7 @@ function PostImagesPgae() {
             name="caption"
             style={{
               width: '100%',
+              marginBottom: '16px',
             }}
           >
             <TextArea
@@ -157,6 +182,7 @@ function PostImagesPgae() {
             style={{
               width: '100%',
               marginTop: 'auto',
+              marginBottom: '16px',
             }}
           >
             Post

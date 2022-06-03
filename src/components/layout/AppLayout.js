@@ -22,7 +22,6 @@ const AppLayout = ({ children }) => {
           flex: 1,
           width: '100%',
           paddingTop: '16px',
-          marginBottom: '16px',
           overflowY: 'auto',
         }}
       >
@@ -46,6 +45,8 @@ const AppLayout = ({ children }) => {
           justifyContent: 'space-around',
           alignItems: 'center',
           paddingBottom: '16px',
+          paddingTop: '16px',
+          boxShadow: '0px -3px 13px 1px rgba(166,166,166,0.42)',
         }}
       >
         <Button
