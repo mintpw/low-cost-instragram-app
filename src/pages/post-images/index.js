@@ -107,7 +107,6 @@ function PostImagesPgae() {
             <div
               style={{
                 width: '100%',
-                // height: '420px',
                 marginBottom: '16px',
                 display: 'flex',
                 justifyContent: 'center',
